@@ -1,6 +1,5 @@
-;;Abhishek Bhunia
-;;Assignment#2: Scheme Interpreter Library
-;;NYU ID: N14403518, NetID: ab5966
+;;Scheme Interpreter Library
+
 
 (define (caar exp)
   (car (car exp)))

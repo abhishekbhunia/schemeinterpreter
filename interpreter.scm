@@ -1,8 +1,6 @@
-;;Abhishek Bhunia
-;;Assignment#2: Scheme Interpreter
-;;NYU ID: N14403518, NetID: ab5966
 
-(define (repl)     ;;; the read-eval-print loop. Didn't change.
+
+(define (repl)     ;;; the read-eval-print loop. 
   (display "--++> ") 
   (let ((exp (read)))
     (cond ((equal? exp '(exit))      ; (exit) only allowed at top level
@@ -12,11 +10,11 @@
 		 (repl))
 	  )))
 
-;;LOAD Didn't Change
-(define (my-load filename)       ;; don't want to redefine the Scheme LOAD
+;;LOAD  
+(define (my-load filename)        
   (load-repl (open-input-file filename)))
 
-;;Didn't Change
+
 (define (load-repl port)
   (let ((exp (read port)))
     (cond ((eof-object? exp) 'done)
@@ -25,7 +23,7 @@
 		  (load-repl port)))
 	  )))
 
-;;TOP LEVEL EVAL (MODIFIED for function definition syntax)
+;;TOP LEVEL EVAL 
 (define (top-eval exp)
   		(cond ((not (pair? exp)) 
   					(my-eval exp *global-env*)
@@ -48,7 +46,7 @@
         (else (cons 'lambda (cons (cdr(cadr exp)) 
                       (cddr exp))))))
 
-;;2ND LEVEL EVAL (MODIFIED)
+;;2ND LEVEL EVAL  
 (define (my-eval exp env)
   (cond
    ((symbol? exp) (lookup exp env))
@@ -59,7 +57,7 @@
    ((eq? (car exp) 'lambda)
     (list 'closure exp env))
    ((eq? (car exp) 'letrec)
-    (handle-letrec (cdr exp) env))  ;; see explanation below
+    (handle-letrec (cdr exp) env))   
    ((eq? (car exp) 'let)
     (handle-let exp env)) 
    ((eq? (car exp) 'let*)
@@ -75,13 +73,13 @@
   )
 )
 
-;;INSERT (DID NOT CHANGE)
+;;INSERT  
 (define (insert! val L)
   (set-cdr! L (cons (car L) (cdr L)))
   (set-car! L val)
   )
 
-;;LOOKUP (DID NOT CHANGE)
+;;LOOKUP  
 (define (lookup var env)
   (let ((item (assoc var env)))  
     (cond ((not item) (display "Error: Undefined Symbol ")
@@ -89,20 +87,20 @@
 	  (else (cadr item))
 	  )))
 
-;;HANDLE IF (DID NOT CHANGE)
+;;HANDLE IF  
 (define (handle-if test then-exp else-exp env)
   (if (my-eval test env)
       (my-eval then-exp env)
       (my-eval else-exp env)))
 
-;;BIND (DID NOT CHANGE)
+;;BIND 
 (define (bind formals actuals);; 
   (cond ((null? formals) '())
 	(else (cons (list (car formals) (car actuals))
 		    (bind (cdr formals) (cdr actuals))))
 	))
 
-;;HANDLE CALL (DID NOT CHANGE)
+;;HANDLE CALL  
 (define (handle-call evald-exps)
   (let ((fn (car evald-exps))
 	(args (cdr evald-exps)))
@@ -117,7 +115,7 @@
     (else (display "Error: HERE Calling non-function"))
     )))
 
-;;extra handler's code below
+
 
 ;;HANDLE-LET
 (define (handle-let let-form env)
@@ -142,7 +140,7 @@
         multi-exp)
 )
 
-;;HANDLE-BLOCK (DID NOT CHANGE)
+;;HANDLE-BLOCK  
 (define (handle-block block env)
   (cond ((null? block) (display "Error: Can't have empty block or body"))
 	((null? (cdr block)) (my-eval (car block) env))
@@ -221,7 +219,7 @@
    )
 )
 
-;;-------------------- Here is the initial global environment --------
+;;-------------------- global environment --------
 
 (define *global-env*
   (list (list 'car (list 'primitive-function car))
@@ -247,7 +245,7 @@
 	(list 'open-input-file (list 'primitive-function open-input-file))
 	(list 'close-input-port (list 'primitive-function close-input-port))
 	(list 'eof-object? (list 'primitive-function eof-object?))
-	(list 'load (list 'primitive-function my-load))  ;;defined above
+	(list 'load (list 'primitive-function my-load))   
 	(list 'newline (list 'primitive-function newline))
 	(list 'apply (list 'primitive-function my-apply))
 	))
