@@ -1,0 +1,142 @@
+All files should be in the correct directory. Under Windows 8 it's "C:\Users\abhis_000\" for me
+
+A)TESTING THE LIBRARY
+
+1. Create a test file with the code you want to test.
+
+2. I created a file "test_library.scm" and uploaded it.
+
+3. Instructions to execute from Dr. Racket(If you are using your own file you need to substitute the file and definition names)
+
+> (load "interpreter.scm") 	;loads interpreter into Scheme system   
+> (repl)			;invokes interpreter, note the change in prompt
+--++> (load "library.scm")
+...
+--++> (load "test_library.scm")
+...
+--++> (test-library)
+...
+--++> (exit)
+
+execution trace:
+
+
+B)TESTING THE INTERPRETER
+
+1. LOADING
+
+> (load "interpreter.scm")     ;loads interpreter into Scheme system                     
+> (repl)                       ;invokes interpreter, note the change in prompt
+--++> (load "library.scm")     ;loads the library file
+--++> (load "interpreter.scm") ;loads the intrepreter into the interpreter(because it's an interpreter interpreting itself)
+--++> (repl)                   ; invokes 2nd level interpreter
+
+2. TESTING
+
+You can define some functions and test it. Some test definitions and their execution results are given below:
+
+i) Factorial
+
+definition:
+
+(define (fac x) (if (= x 0) 1 (* x (fac (- x 1)))))
+
+execution trace:
+
+--++> (define (fac x) (if (= x 0) 1 (* x (fac (- x 1)))))
+fac
+--++> (fac 5)
+120
+
+ii) Recursive function definition using letrec
+
+definition:
+
+(define (test-letrec)
+  
+	(letrec
+((f (lambda (x) (if (= x 0) 1 (* x (g (- x 1))))))
+       
+		(g (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))))
+    
+	(display "Should return 120 for factorial 5") (newline)
+ (f 5)))
+
+execution trace:
+
+--++> (define (test-letrec)
+  
+	(letrec
+((f (lambda (x) (if (= x 0) 1 (* x (g (- x 1))))))
+       
+		(g (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))))
+    
+	(display "Should return 120 for factorial 5") (newline)
+ (f 5)))
+test-letrec
+--++> (test-letrec)
+Should return 120
+120
+
+iii) let* binding
+
+definition: 
+
+(define (test-let*)
+  
+	(let* ((one 1) (two (+ one 1)))
+    
+	(display "Should return 2") (newline)
+ two))
+
+execution trace:
+
+--++> (define (test-let*)
+  (let* ((one 1) (two (+ one 1)))
+    (display "Should return 2") (newline)
+    two))
+test-let*
+--++> (test-let*)
+Should return 2
+2
+
+iv) conditional test
+
+definition:
+
+(define one 10)
+(define two 20)
+(define (test-cond)
+   
+	(display "Should return 10") (newline)
+   
+	(cond ((= one two) 3)
+ ((= one (* one 1))
+          
+	(cond ((null? '(1 2 3)) 4)
+ (else (- two one))
+))
+(else 5)))
+
+execution trace:
+
+--++> (define one 10)
+one
+--++> (define two 20)
+two
+--++> (define (test-cond)
+   
+	(display "Should return 10") (newline)
+   
+	(cond ((= one two) 3)
+ ((= one (* one 1))
+          
+	(cond ((null? '(1 2 3)) 4)
+ (else (- two one))
+))
+(else 5)))
+test-cond
+--++> (test-cond)
+Should return 10
+10
+
